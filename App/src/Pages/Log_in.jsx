@@ -3,6 +3,7 @@ import axios from 'axios'
 
 const Log_in = () => {
   const [log, setlog] = useState(true)
+  const [MobSignUp, setMobSignUp] = useState(false)
 
   const [data, setdata] = useState({
     name: "",
@@ -89,15 +90,14 @@ const Log_in = () => {
               <input className="input" name="department" onChange={handleChange} type="text" placeholder="departmentment" required />
               <input className="input" name="semester" onChange={handleChange} type="number" placeholder="Semester" required />
 
-              <h1>Forget your password?</h1>
+              <h1>Already have an account</h1>
               <div className="primary-btn cursor-pointer" onClick={handleSubmit}>SIGN UP</div>
             </div>
           </div>
 
 
-
           {log ? (
-            <div className={`${log ? 'Sign translate-x-0' : 'Sign_toggle hidden'} transition-all duration-300`}>
+            <div className={`${log ? 'Sign translate-x-0' : 'Sign_toggle hidden'} ${MobSignUp ? 'hidden' : 'Sign'} transition-all duration-300`}>
               <h1 className="Title">Sign in</h1>
               <h1>Use your email and password</h1>
               <div className="form w-[80%] py-5 flex mx-auto items-center flex-col gap-5">
@@ -122,12 +122,48 @@ const Log_in = () => {
                 </div>
 
                 <h1>Forget your password?</h1>
+                
+                <div className='flex gap-5'>
                 <div className="primary-btn cursor-pointer" onClick={handleLogin}>SIGN IN</div>
+                <div className="primary-btn cursor-pointer md:hidden" onClick={() => setMobSignUp(!MobSignUp)}>SIGN UP</div>
+                </div>
+
               </div>
             </div>
           ) : (
             <div></div>
           )}
+
+          <div className={`${MobSignUp ? 'flex' : 'hidden'} md:hidden flex flex-col gap-5 items-center justify-center transition-all duration-300`}>
+            <h1 className="Title">Sign up</h1>
+            <h1>Use your email and password</h1>
+            <div className="form w-[80%] py-5 flex mx-auto items-center flex-col gap-5">
+              <input className="input" name="name" onChange={handleChange} type="text" placeholder="Name" required />
+
+              <div className="w-full relative">
+                <input
+                  className="input w-full pr-10"
+                  name="password"
+                  onChange={handleChange}
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Password"
+                  required
+                />
+                <span
+                  className="absolute right-3 top-2 cursor-pointer text-sm text-blue-600"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                >
+                  {showPassword ? "Hide" : "Show"}
+                </span>
+              </div>
+
+              <input className="input" name="department" onChange={handleChange} type="text" placeholder="departmentment" required />
+              <input className="input" name="semester" onChange={handleChange} type="number" placeholder="Semester" required />
+
+              <div onClick={() => setMobSignUp(!MobSignUp)}><h1>Already have an account</h1></div>
+              <div className="primary-btn cursor-pointer" onClick={handleSubmit}>SIGN UP</div>
+            </div>
+          </div>
 
         </div>
       </div>
