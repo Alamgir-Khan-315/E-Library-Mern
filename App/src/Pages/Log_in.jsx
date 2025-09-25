@@ -9,7 +9,8 @@ const Log_in = () => {
     name: "",
     password: "",
     department: "",
-    semester: ""
+    semester: "",
+    role:"student"
   });
 
   const [showPassword, setShowPassword] = useState(false);
@@ -52,11 +53,11 @@ const Log_in = () => {
   
   return (
     <div>
-      <div className="sign-up min-h-[calc(100vh-5rem)] flex items-center">
-        <div className="container mx-3 md:flex justify-around gap-5 md:border rounded-xl drop-shadow-xl">
+      <div className="sign-up min-h-[calc(100vh-5rem)] flex items-center ">
+        <div className="container mx-3 md:flex justify-around gap-5 md:border rounded-xl drop-shadow-xl bg-white">
 
 
-          <div className={`${log ? 'Sign_toggle' : 'Sign_toggle translate-x-[65%]'} hidden md:flex flex-col gap-5 items-center justify-center transition-all duration-300`}>
+          <div className={`${log ? 'Sign_toggle rounded-tr-[20%] rounded-br-[20%]' : 'Sign_toggle rounded-tl-[20%] rounded-bl-[20%] translate-x-[65%]'} hidden md:flex flex-col gap-5 items-center justify-center transition-all duration-500`}>
             <h1 className="Title">Hello, Friend!</h1>
             <h1>Register with your personal details to use all of site features</h1>
             <div className="secondary-btn cursor-pointer" onClick={() => setlog(!log)}>

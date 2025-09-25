@@ -9,12 +9,12 @@
 .secondary-btn{ @apply w-fit p-2 px-3 rounded-xl font-bold border border-white cursor-pointer hover:bg-white/20 hover:shadow-xl hover:scale-105 duration-100 transition-all }
 
 .main{
-    @apply w-full h-screen
+    @apply w-full h-screen bg-blue-50/50
 }
 
 /* nav */
 .Sign_toggle{
-    @apply md:w-[50%] py-5 primary rounded-tl-[20%] rounded-bl-[20%] text-center text-white
+    @apply md:w-[50%] py-5 primary text-center text-white
 }
 .Sign{
     @apply md:w-[50%] text-center py-5

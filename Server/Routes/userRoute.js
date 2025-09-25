@@ -15,14 +15,14 @@ router.get("/", async (req, res) => {
 
 router.post("/", async (req, res) => {
   try {
-    const { name, password, department, semester } = req.body;
+    const { name, password, department, semester , role } = req.body;
 
-    if (!name || !password || !department || !semester) {
+    if (!name || !password || !department || !semester || !role) {
       return res.status(400).json({ error: "All fields are required" });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const user = new User({ name, password: hashedPassword, department: department.toLowerCase(), semester });
+    const user = new User({ name, password: hashedPassword, department: department.toLowerCase(), semester , role });
     await user.save();
 
     res.status(201).json({ message: "Student saved successfully", user });
