@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
-import axios from 'axios'
+import { useNavigate } from 'react-router-dom';
+import { StudentLogIn , AddStudent } from '../Utilities/api'
 
 const Log_in = () => {
   const [log, setlog] = useState(true)
   const [MobSignUp, setMobSignUp] = useState(false)
+  const navigate = useNavigate();
 
   const [data, setdata] = useState({
     name: "",
@@ -22,35 +24,17 @@ const Log_in = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    try {
-      const res = await axios.post("http://localhost:5000/api/users/login", {
-        name: data.name,
-        password: data.password
-      });
-
-      console.log("Login success:", res.data);
-      localStorage.setItem("student", res.data.user.name);
-      alert("Login successful!");
-    } catch (err) {
-      console.error("Error:", err.response?.data || err.message);
-      alert(err.response?.data?.error || "Login failed");
-    }
+    StudentLogIn(data, navigate); 
   };
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const res = await axios.post("http://localhost:5000/api/users/", data);
-      console.log("Saved:", res.data);
-  
-      alert("Student saved successfully!");
-  
-      setdata({ name: "", password: "", departmentment: "", semester: "" });
-    } catch (err) {
-      console.error("Error:", err.response?.data || err.message);
-    }
+    await AddStudent(data);
+    window.location.reload();
   };
-  
+
+
   return (
     <div>
       <div className="sign-up min-h-[calc(100vh-5rem)] flex items-center ">

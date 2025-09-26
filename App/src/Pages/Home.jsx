@@ -1,20 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+import Admin from './Admin'
+import Student from './Student'
 
-const Home = () => {
-  const [studentName, setStudentName] = useState("");
 
-  useEffect(() => {
-    const storedName = localStorage.getItem("student");
-    console.log(storedName);
-    if (storedName) {
-      setStudentName(storedName);
-    }
-  }, []);
-
+const Home = (props) => {
+ 
   return (
     <div>
-      <h1>Home</h1>
-      <p>Welcome, {studentName ? studentName : "Guest"} 👋</p>
+      <p className='text-2xl font-extrabold text-gray-900'>Welcome, {props.student ? props.student.name : "Guest"} 👋</p>
+      { props.student.role === 'admin' ? <Admin student={props.student} /> : <Student /> }
     </div>
   );
 };

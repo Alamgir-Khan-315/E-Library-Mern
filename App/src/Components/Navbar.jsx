@@ -1,10 +1,24 @@
 import React, { useState } from 'react'
-import { Link, NavLink } from 'react-router-dom'
+import { useEffect } from 'react'
+import { Link, NavLink , useNavigate } from 'react-router-dom'
 
-const Navbar = () => {
+const Navbar = (props) => {
+  
+  const navigate = useNavigate();
+  
+  useEffect(() => {
+    const studentName = props.student.name;
+    console.log("Student object changed. New name:", studentName);
+  }, [props.student]); 
+
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   const closeMobileMenu = () => setIsMobileMenuOpen(false)
+  const LogOut = () => {
+    localStorage.clear();
+    navigate('/log_in');
+    window.location.reload();
+  }
 
   const navLinkBase = "text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
   const navLinkActive = "text-gray-900"
@@ -24,20 +38,16 @@ const Navbar = () => {
 
           <div className="hidden md:flex items-center gap-8">
             <NavLink to="/" className={({ isActive }) => `${navLinkBase} ${isActive ? navLinkActive : ''}`}  end >Home</NavLink>
-            <NavLink to="/log_in" className={({ isActive }) => `${navLinkBase} ${isActive ? navLinkActive : ''}`}  end >Library</NavLink>
-            <NavLink to="/log_in" className={({ isActive }) => `${navLinkBase} ${isActive ? navLinkActive : ''}`}  end >Departments</NavLink>
-            <NavLink to="/log_in" className={({ isActive }) => `${navLinkBase} ${isActive ? navLinkActive : ''}`}  end >Profile</NavLink>
+            <NavLink to="/" className={({ isActive }) => `${navLinkBase} ${isActive ? navLinkActive : ''}`}  end >Library</NavLink>
+            <NavLink to="/" className={({ isActive }) => `${navLinkBase} ${isActive ? navLinkActive : ''}`}  end >Departments</NavLink>
+            <NavLink to="/profile" className={({ isActive }) => `${navLinkBase} ${isActive ? navLinkActive : ''}`}  end >Profile</NavLink>
           </div>
 
           <div className="flex items-center gap-3">
-            <Link
-              to="/log_in"
-              className={`${buttonBase} bg-indigo-600 text-white hover:bg-indigo-500 focus-visible:outline-indigo-600 hidden sm:inline-flex`}
-              onClick={closeMobileMenu}
-            >
-              Log in
-            </Link>
-
+            { props.student ? 
+              <Link to="/log_in" className={`${buttonBase} w-full bg-indigo-600 text-white hover:bg-indigo-500 focus-visible:outline-indigo-600`} onClick={LogOut}> Log out {props.student.name} </Link> 
+              : <Link to="/log_in" className={`${buttonBase} w-full bg-indigo-600 text-white hover:bg-indigo-500 focus-visible:outline-indigo-600`} onClick={closeMobileMenu} > Log in </Link> 
+            }
             <button
               type="button"
               className="md:hidden inline-flex items-center justify-center rounded-md p-2 text-gray-700 hover:bg-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600"
@@ -63,19 +73,13 @@ const Navbar = () => {
       <div id="mobile-menu" className={`${isMobileMenuOpen ? 'block' : 'hidden'} md:hidden border-t bg-white/95 backdrop-blur`}> 
         <div className="px-4 pt-2 pb-4 space-y-1">
         
-          <NavLink to="/" className={({ isActive }) => `block rounded-md px-3 py-2 ${navLinkBase} ${isActive ? navLinkActive : ''}`}  end >Home</NavLink>
-          <NavLink to="/log_in" className={({ isActive }) => `block rounded-md px-3 py-2 ${navLinkBase} ${isActive ? navLinkActive : ''}`}  end >Library</NavLink>
-          <NavLink to="/log_in" className={({ isActive }) => `block rounded-md px-3 py-2 ${navLinkBase} ${isActive ? navLinkActive : ''}`}  end >Departments</NavLink>
-          <NavLink to="/log_in" className={({ isActive }) => `block rounded-md px-3 py-2 ${navLinkBase} ${isActive ? navLinkActive : ''}`}  end >Profile</NavLink>
+          <NavLink to="/" className={({ isActive }) => `block rounded-md px-3 py-2 ${navLinkBase} ${isActive ? navLinkActive : ''}`} onClick={closeMobileMenu} end >Home</NavLink>
+          <NavLink to="/" className={({ isActive }) => `block rounded-md px-3 py-2 ${navLinkBase} ${isActive ? navLinkActive : ''}`} onClick={closeMobileMenu} end >Library</NavLink>
+          <NavLink to="/" className={({ isActive }) => `block rounded-md px-3 py-2 ${navLinkBase} ${isActive ? navLinkActive : ''}`} onClick={closeMobileMenu} end >Departments</NavLink>
+          <NavLink to="/profile" className={({ isActive }) => `block rounded-md px-3 py-2 ${navLinkBase} ${isActive ? navLinkActive : ''}`} onClick={closeMobileMenu} end >Profile</NavLink>
          
           <div className="pt-2">
-            <Link
-              to="/log_in"
-              className={`${buttonBase} w-full bg-indigo-600 text-white hover:bg-indigo-500 focus-visible:outline-indigo-600`}
-              onClick={closeMobileMenu}
-            >
-               Log in
-            </Link>
+        
           </div>
         </div>
       </div>
