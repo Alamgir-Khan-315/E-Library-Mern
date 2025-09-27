@@ -3,7 +3,8 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const userRoutes = require("./Routes/userRoute.js")
-
+const departmentRoutes = require("./Routes/DepartmentRoute.js");
+const courseRoutes = require("./Routes/courseRoute.js");
 dotenv.config();
 
 const app = express();
@@ -18,6 +19,8 @@ mongoose
 
   
 app.use("/api/users", userRoutes);
+app.use("/api/departments", departmentRoutes);
+app.use("/api/courses", courseRoutes);
 
 
 const PORT = process.env.PORT || 5000;

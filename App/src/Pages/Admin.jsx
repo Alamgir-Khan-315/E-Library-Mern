@@ -1,7 +1,7 @@
 import Box_info from './Components/Box_info';
 import Student_table from './Components/Student_table';
-import Depart_list from './Components/Depart_list';
-import Course_list from './Components/Course_list';
+import Depart_table from './Components/Depart_table';
+import Course_table from './Components/Course_table';
 
 
 const Admin = () => {
@@ -12,8 +12,8 @@ const Admin = () => {
 
        <Box_info />
        <Student_table />
-       <Depart_list />
-       <Course_list />
+       <Depart_table />
+       <Course_table />
 
     </div>
   );

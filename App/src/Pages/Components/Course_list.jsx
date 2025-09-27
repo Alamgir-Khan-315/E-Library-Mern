@@ -1,109 +1,124 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
-const Course_list = () => {
-    const [students, setStudents] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const [isExpanded, setIsExpanded] = useState(true);
+const CourseCards = () => {
+  const [courses, setCourses] = useState([]);
+  const [filteredCourses, setFilteredCourses] = useState([]);
+  const [departments, setDepartments] = useState([]);
+  const [selectedDept, setSelectedDept] = useState("all");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-    useEffect(() => {
-      const fetchStudents = async () => {
-        try {
-          const response = await axios.get("http://localhost:5000/api/users");
-          setStudents(response.data);
-          localStorage.setItem('students', JSON.stringify(response.data));
-        } catch (err) {
-          setError("Failed to fetch student data. Please try again later.");
-          console.error("Error fetching students:", err);
-        } finally {
-          setLoading(false);
-        }
-      };
-      
-      fetchStudents();
-    }, []);
-
-    const handleDelete = async (studentId) => {
-      if (window.confirm("Are you sure you want to delete this student?")) {
-        try {
-          await axios.delete(`http://localhost:5000/api/users/${studentId}`);
-          setStudents(students.filter(student => student._id !== studentId));
-        } catch (err) {
-          console.error("Error deleting student:", err);
-          alert("Failed to delete student. Please try again.");
-        }
+  
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        const res = await axios.get("http://localhost:5000/api/courses");
+        setCourses(res.data);
+        setFilteredCourses(res.data);
+        setError(null);
+      } catch (err) {
+        console.error("Error fetching courses:", err);
+        setError("Failed to load courses.");
+      } finally {
+        setLoading(false);
       }
     };
 
-    const toggleTable = () => {
-      setIsExpanded(!isExpanded);
+    fetchCourses();
+  }, []);
+
+  
+  useEffect(() => {
+    const fetchDepartments = async () => {
+      try {
+        const res = await axios.get("http://localhost:5000/api/departments");
+        setDepartments(res.data);
+      } catch (err) {
+        console.error("Error fetching departments:", err);
+      }
     };
 
-    return (
-      <div>
-        <div className="max-w-7xl mx-auto bg-white shadow-md rounded-lg p-6">
-          <div className="flex justify-between items-center mb-6">
-            <h1 className="text-3xl font-bold text-gray-800">Course List</h1>
-            <button
-              onClick={toggleTable}
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out transform hover:scale-105"
+    fetchDepartments();
+  }, []);
+
+  
+  useEffect(() => {
+    if (selectedDept === "all") {
+      setFilteredCourses(courses);
+    } else {
+      setFilteredCourses(courses.filter(c => c.departmentName === selectedDept));
+    }
+  }, [selectedDept, courses]);
+
+  if (loading) return <div className="text-center mt-10 text-gray-500">Loading...</div>;
+  if (error) return <div className="text-center mt-10 text-red-500">{error}</div>;
+
+  return (
+    <div className="max-w-7xl mx-auto px-6 py-8">
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-3xl font-bold text-gray-800">Course List</h1>
+
+
+        <select
+          value={selectedDept}
+          onChange={(e) => setSelectedDept(e.target.value)}
+          className="border rounded px-3 py-2 text-gray-700"
+        >
+          <option value="all">All Departments</option>
+          {departments.map((dept) => (
+            <option key={dept._id} value={dept.departmentName}>
+              {dept.departmentName}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {filteredCourses.length > 0 ? (
+        <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 drop-shadow-lg">
+          {filteredCourses.map((course) => (
+            <div
+              key={course._id}
+              className="bg-purple-100/20 shadow-lg rounded-lg overflow-hidden hover:shadow-xl hover:scale-105 transition duration-300"
             >
-              {isExpanded ? 'Collapse Table' : 'Expand Table'}
-            </button>
-          </div>
-          {loading ? (
-            <div className="text-center text-gray-500">Loading...</div>
-          ) : error ? (
-            <div className="text-center text-red-500">{error}</div>
-          ) : students.length > 0 ? (
-            <div className={`overflow-hidden transition-all duration-500 ease-in-out ${isExpanded ? 'max-h-screen' : 'max-h-0'}`}>
-              <div className="overflow-x-auto">
-                <table className="min-w-full leading-normal">
-                  <thead>
-                    <tr className="bg-gray-200">
-                      <th className="px-5 py-3 border-b-2 border-gray-300 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider rounded-tl-lg">Name</th>
-                      <th className="px-5 py-3 border-b-2 border-gray-300 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Role</th>
-                      <th className="px-5 py-3 border-b-2 border-gray-300 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Department</th>
-                      <th className="px-5 py-3 border-b-2 border-gray-300 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Semester</th>
-                      <th className="px-5 py-3 border-b-2 border-gray-300 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {students.map((student, index) => (
-                      <tr key={student._id || index} className="hover:bg-gray-50">
-                        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                          <p className="text-gray-900 whitespace-no-wrap">{student.name}</p>
-                        </td>
-                        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                          <p className="text-gray-900 whitespace-no-wrap">{student.role}</p>
-                        </td>
-                        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                          <p className="text-gray-900 whitespace-no-wrap">{student.department}</p>
-                        </td>
-                        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                          <p className="text-gray-900 whitespace-no-wrap">{student.semester}</p>
-                        </td>
-                        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-right flex items-start">
-                          <button
-                            onClick={() => handleDelete(student._id)}
-                            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-                          >
-                            Delete
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+              <div className="p-5 md:w-[80%] md:mx-auto">
+                <h2 className="text-2xl font-bold text-gray-800 my-4 text-center">
+                  {course.courseName}
+                </h2>
+                
+                <div className="body_text my-2">
+                  <p className="text-sm text-gray-600">
+                    <span className="font-medium">Department:</span> {course.departmentName}
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    <span className="font-medium">Semester:</span> {course.semesterNo}
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    <span className="font-medium">Instructor:</span> {course.instructor}
+                  </p>
+                </div>
+
+               <div className="btn items-center justify-center flex">
+                {course.pdf_url && (
+                    <a
+                      href={course.pdf_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-4 inline-block primary-btn"
+                    >
+                      View PDF
+                    </a>
+                  )}
+               </div>
               </div>
             </div>
-          ) : (
-            <div className="text-center text-gray-500">No students found.</div>
-          )}
+          ))}
         </div>
-      </div>
-    );
+      ) : (
+        <div className="text-center text-gray-500">No courses found for this department.</div>
+      )}
+    </div>
+  );
 };
 
-export default Course_list;
+export default CourseCards;

@@ -4,7 +4,9 @@ import { useEffect, useState } from "react";
 import Navbar from "./Components/Navbar"
 import Log_in from "./Pages/Log_in"
 import HomePage from './Pages/Home'
+import Library from "./Pages/Library";
 import Profile from "./Pages/Profile";
+import Department from './Pages/Department'
 
 
 
@@ -28,6 +30,8 @@ export default function App() {
 
         <Routes>
           <Route path="/" element={< HomePage student={student}/>} />
+          <Route path="/department" element={< Department />} />
+          <Route path="/library" element={< Library />} />
           <Route path="/profile" element={< Profile student={student} />} />
           <Route path="/log_in" element={< Log_in />} />
         </Routes>

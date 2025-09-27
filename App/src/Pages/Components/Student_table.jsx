@@ -29,6 +29,7 @@ const Student_table = () => {
         try {
           await axios.delete(`http://localhost:5000/api/users/${studentId}`);
           setStudents(students.filter(student => student._id !== studentId));
+          window.location.reload();
         } catch (err) {
           console.error("Error deleting student:", err);
           alert("Failed to delete student. Please try again.");
@@ -60,16 +61,16 @@ const Student_table = () => {
             <div className={`overflow-hidden transition-all duration-500 ease-in-out ${isExpanded ? 'max-h-screen' : 'max-h-0'}`}>
               <div className="overflow-x-auto">
                 <table className="min-w-full leading-normal">
-                  <thead>
+                  <thead className='text-center'>
                     <tr className="bg-gray-200">
-                      <th className="px-5 py-3 border-b-2 border-gray-300 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider rounded-tl-lg">Name</th>
-                      <th className="px-5 py-3 border-b-2 border-gray-300 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Role</th>
-                      <th className="px-5 py-3 border-b-2 border-gray-300 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Department</th>
-                      <th className="px-5 py-3 border-b-2 border-gray-300 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Semester</th>
-                      <th className="px-5 py-3 border-b-2 border-gray-300 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Action</th>
+                      <th className="px-5 py-3 border-b-2 border-gray-300 text-xs font-semibold text-gray-600 uppercase tracking-wider rounded-tl-lg">Name</th>
+                      <th className="px-5 py-3 border-b-2 border-gray-300 text-xs font-semibold text-gray-600 uppercase tracking-wider">Role</th>
+                      <th className="px-5 py-3 border-b-2 border-gray-300 text-xs font-semibold text-gray-600 uppercase tracking-wider">Department</th>
+                      <th className="px-5 py-3 border-b-2 border-gray-300 text-xs font-semibold text-gray-600 uppercase tracking-wider">Semester</th>
+                      <th className="px-5 py-3 border-b-2 border-gray-300 text-xs font-semibold text-gray-600 uppercase tracking-wider">Action</th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody className='text-center'>
                     {students.map((student, index) => (
                       <tr key={student._id || index} className="hover:bg-gray-50">
                         <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
@@ -84,7 +85,7 @@ const Student_table = () => {
                         <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                           <p className="text-gray-900 whitespace-no-wrap">{student.semester}</p>
                         </td>
-                        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-right flex items-start">
+                        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm ">
                           <button
                             onClick={() => handleDelete(student._id)}
                             className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"

@@ -8,8 +8,8 @@ const userSchema = new mongoose.Schema(
     semester: { type: String, required: true },
     role: {
       type: String,
-      enum: ["admin", "student"], // restrict values
-      default: "student"          // default role if not provided
+      enum: ["admin", "student"],
+      default: "student" 
     }
   },
   { timestamps: true }

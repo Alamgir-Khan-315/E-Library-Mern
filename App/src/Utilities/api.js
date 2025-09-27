@@ -41,5 +41,17 @@ const StudentLogIn = async(data, navigate) => {
     }
   };
 
+  const GetDepartment = async (setDepartment) => {
+      try {
+        const response = await axios.get("http://localhost:5000/api/departments");
+        setDepartment(response.data);
+        localStorage.setItem('departnments', JSON.stringify(response.data));
+      } catch (err) {
+        setError("Failed to fetch student data. Please try again later.");
+        console.error("Error fetching students:", err);
+      } finally {
+        setLoading(false);
+      }
+  }
 
-export { StudentLogIn , AddStudent , GetStudent  };
+export { StudentLogIn , AddStudent , GetStudent , GetDepartment };

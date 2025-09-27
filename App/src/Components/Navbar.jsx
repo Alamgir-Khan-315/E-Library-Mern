@@ -37,9 +37,9 @@ const Navbar = (props) => {
           </div>
 
           <div className="hidden md:flex items-center gap-8">
-            <NavLink to="/" className={({ isActive }) => `${navLinkBase} ${isActive ? navLinkActive : ''}`}  end >Home</NavLink>
-            <NavLink to="/" className={({ isActive }) => `${navLinkBase} ${isActive ? navLinkActive : ''}`}  end >Library</NavLink>
-            <NavLink to="/" className={({ isActive }) => `${navLinkBase} ${isActive ? navLinkActive : ''}`}  end >Departments</NavLink>
+            <NavLink to="/" className={({ isActive }) => `${navLinkBase} ${isActive ? navLinkActive : ''}`}  end >{ props.student.role === 'admin' ? 'Dashboard' : 'Home'}</NavLink>
+            <NavLink to="/library" className={({ isActive }) => `${navLinkBase} ${isActive ? navLinkActive : ''}`}  end >Library</NavLink>
+            <NavLink to="/department" className={({ isActive }) => `${navLinkBase} ${isActive ? navLinkActive : ''}`}  end >Departments</NavLink>
             <NavLink to="/profile" className={({ isActive }) => `${navLinkBase} ${isActive ? navLinkActive : ''}`}  end >Profile</NavLink>
           </div>
 
@@ -74,8 +74,8 @@ const Navbar = (props) => {
         <div className="px-4 pt-2 pb-4 space-y-1">
         
           <NavLink to="/" className={({ isActive }) => `block rounded-md px-3 py-2 ${navLinkBase} ${isActive ? navLinkActive : ''}`} onClick={closeMobileMenu} end >Home</NavLink>
-          <NavLink to="/" className={({ isActive }) => `block rounded-md px-3 py-2 ${navLinkBase} ${isActive ? navLinkActive : ''}`} onClick={closeMobileMenu} end >Library</NavLink>
-          <NavLink to="/" className={({ isActive }) => `block rounded-md px-3 py-2 ${navLinkBase} ${isActive ? navLinkActive : ''}`} onClick={closeMobileMenu} end >Departments</NavLink>
+          <NavLink to="/library" className={({ isActive }) => `block rounded-md px-3 py-2 ${navLinkBase} ${isActive ? navLinkActive : ''}`} onClick={closeMobileMenu} end >Library</NavLink>
+          <NavLink to="/department" className={({ isActive }) => `block rounded-md px-3 py-2 ${navLinkBase} ${isActive ? navLinkActive : ''}`} onClick={closeMobileMenu} end >Departments</NavLink>
           <NavLink to="/profile" className={({ isActive }) => `block rounded-md px-3 py-2 ${navLinkBase} ${isActive ? navLinkActive : ''}`} onClick={closeMobileMenu} end >Profile</NavLink>
          
           <div className="pt-2">
